@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hrdb
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  ai:
+    ollama:
+      init:
+        pull-model-strategy: never
+      base-url: http://localhost:11434
+
+      embedding:
+        options:
+          model: nomic-embed-text
+
+      chat:
+        options:
+          model: llama3.2:latest
+          temperature: 0.2
+
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
