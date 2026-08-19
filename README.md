@@ -188,22 +188,31 @@ Example Docker Compose:
 
 services:
 
-
   pgvector:
     image: pgvector/pgvector:pg17
     container_name: pgvector
+    restart: unless-stopped
+
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: hrdb
+
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
+
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgvector_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d hrdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 
 volumes:
-  pgdata:
+  pgvector_data:
 
 Start PostgreSQL:
 
